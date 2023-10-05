@@ -71,11 +71,23 @@ async def give_filter(client, message):
 @Client.on_message(filters.private | filters.text & filters.incoming)
 async def pm_text(bot, message):
     content = message.text
+
+    # Check if message.text is None
+    if content is None:
+        return
+
     user = message.from_user.first_name
     user_id = message.from_user.id
-    if content.startswith("/") or content.startswith("#"): return  # ignore commands and hashtags
-    if user_id in ADMINS: return # ignore admins
-
+    
+    # Ignore messages that start with "/" or "#"
+    if content.startswith("/") or content.startswith("#"):
+        return
+    
+    # Ignore messages from specific user IDs (defined in ADMINS)
+    if user_id in ADMINS:
+        return
+    
+    # Send the message to a request channel
     await bot.send_message(
         chat_id=REQST_CHANNEL,
         text=f"<b>#𝐏𝐌_𝐌𝐒𝐆\n\nNᴀᴍᴇ : {user}\n\nID : {user_id}\n\nMᴇssᴀɢᴇ : {content}</b>"
