@@ -99,12 +99,12 @@ async def start(client, message):
             btn.append([InlineKeyboardButton(naam, url=invite_link.invite_link)])
             
         if message.command[1] != "subscribe":
-            try:
+           try:
                 kk, file_id = message.command[1].split("_", 1)
                 pre = 'checksubp' if kk == 'filep' else 'checksub' 
-               btn.append([InlineKeyboardButton("↻ Tʀʏ Aɢᴀɪɴ", callback_data=f"{pre}#{file_id}")])
+                btn.append([InlineKeyboardButton("↻ Tʀʏ Aɢᴀɪɴ", callback_data=f"{pre}#{file_id}")])
             except (IndexError, ValueError):
-                btn.append([InlineKeyboardButton("â†» TÊ€Ê AÉ¢á´€ÉªÉ´", url=f"https://t.me/{temp.U_NAME}?start={message.command[1]}")])
+                btn.append([InlineKeyboardButton("↻ Tʀʏ Aɢᴀɪɴ", url=f"https://t.me/{temp.U_NAME}?start={message.command[1]}")])
         await client.send_message(
             chat_id=message.from_user.id,
            text="**🚸| Sorry, you are not in our Backup Channel\n\n🔰| You need to subscribe it! In order to use our Movies Bot.\n\n📺 𝗖𝗵𝗮𝗻𝗻𝗲𝗹 1: \n\nhttp://t.me/+u6G9wOGWt6Q4NTk1\n\n📺 𝗖𝗵𝗮𝗻𝗻𝗲𝗹 2:\n\nhttp://t.me/+JNYFvb7EuI40ZWZl\n\n‼️| 𝗦𝘂𝗯𝘀𝗰𝗿𝗶𝗯𝗲 𝗮𝗻𝗱 𝘁𝗵𝗲𝗻 𝘀𝗲𝗻𝗱 /𝘀𝘁𝗮𝗿𝘁. 👍**",
