@@ -9,7 +9,7 @@ from pyrogram.errors import ChatAdminRequired, FloodWait
 from pyrogram.types import *
 from database.ia_filterdb import Media, get_file_details, unpack_new_file_id, get_bad_files
 from database.users_chats_db import db
-from info import CHANNELS, ADMINS, AUTH_CHANNEL, AUTH_CHANNEL1, LOG_CHANNEL, PICS, BATCH_FILE_CAPTION, CUSTOM_FILE_CAPTION, PROTECT_CONTENT, CHNL_LNK, GRP_LNK, REQST_CHANNEL, SUPPORT_CHAT_ID, SUPPORT_CHAT, MAX_B_TN, VERIFY, SHORTLINK_API, SHORTLINK_URL, TUTORIAL, IS_TUTORIAL, PREMIUM_USER,IS_STREAM
+from info import CHANNELS, ADMINS, AUTH_CHANNEL, AUTH_CHANNEL1, LOG_CHANNEL, PICS, BATCH_FILE_CAPTION, CUSTOM_FILE_CAPTION, PROTECT_CONTENT, CHNL_LNK, GRP_LNK, REQST_CHANNEL, SUPPORT_CHAT_ID, SUPPORT_CHAT, MAX_B_TN, VERIFY, SHORTLINK_API, SHORTLINK_URL, TUTORIAL, IS_TUTORIAL, PREMIUM_USER
 from utils import get_settings, get_size, is_subscribed, save_group_settings, temp, verify_user, check_token, check_verification, get_token, get_shortlink, get_tutorial
 from database.connections_mdb import active_connection
 # from plugins.pm_filter import ENABLE_SHORTLINK
@@ -352,33 +352,17 @@ async def start(client, message):
                 file_id=file_id,
                 caption=f_caption,
                 protect_content=True if pre == 'filep' else False,
-           reply_markup=(
-                    InlineKeyboardMarkup(
-                        [
-                            [
-                                InlineKeyboardButton('Watch Online/ Fast Download', callback_data=f'gen_stream_link:{file_id}')
-                            ],[
-                                InlineKeyboardButton(' 🍿 Movies Update 🍿', url="https://t.me/+kCo8QBKkmAk0OWJl"),
-                           InlineKeyboardButton(' 🏏Cricket Updates🏏 ', url="https://t.me/+rhJP2sUIPrJiNzM1")
-                            ]
-                        ]
-                    )
-                    if IS_STREAM
-                    else InlineKeyboardMarkup(
-                        [
-                            [
-                                InlineKeyboardButton(' 🍿 Movies Update 🍿', url="https://t.me/+kCo8QBKkmAk0OWJl"),
-                           InlineKeyboardButton(' 🏏Cricket Updates🏏 ', url="https://t.me/+rhJP2sUIPrJiNzM1")
-                            ]
+                reply_markup=InlineKeyboardMarkup(
+                    [
+                         [
+                           InlineKeyboardButton(' 🍿 Movies Update 🍿', url="https://t.me/+kCo8QBKkmAk0OWJl")
+                       ],[
+                        InlineKeyboardButton(' 🏏Cricket Updates🏏 ', url="https://t.me/+rhJP2sUIPrJiNzM1")
+                         ]
                         ]
                     )
                 )
-            )
             filesarr.append(msg)
-        k = await client.send_message(chat_id = message.from_user.id, text=f"<b><u>❗️❗️❗️IMPORTANT❗️️❗️❗️</u></b>\n\nThis Movie Files/Videos will be deleted in <b><u>10 mins</u> 🫥 <i></b>(Due to Copyright Issues)</i>.\n\n<b><i>Please forward this ALL Files/Videos to your Saved Messages and Start Download there</i></b>")
-        await asyncio.sleep(600)
-        for x in filesarr:
-            await x.delete()
         await k.edit_text("<b>Your All Files/Videos is successfully deleted!!!</b>")
         return    
         
@@ -420,37 +404,24 @@ async def start(client, message):
                     protect_content=True,
                     reply_markup=InlineKeyboardMarkup(btn)
                 )
- return
+                return
             msg = await client.send_cached_media(
                 chat_id=message.from_user.id,
                 file_id=file_id,
                 protect_content=True if pre == 'filep' else False,
-                reply_markup=(
-                    InlineKeyboardMarkup(
-                        [
-                            [
-                                InlineKeyboardButton('Watch Online/ Fast Download', callback_data=f'gen_stream_link:{file_id}')
-                            ],[
-                                InlineKeyboardButton(' 🍿 Movies Update 🍿', url="https://t.me/+kCo8QBKkmAk0OWJl"),
-                           InlineKeyboardButton(' 🏏Cricket Updates🏏 ', url="https://t.me/+rhJP2sUIPrJiNzM1")
-                            ]
-                        ]
-                    )
-                    if IS_STREAM
-                    else InlineKeyboardMarkup(
-                        [
-                            [
-                                InlineKeyboardButton(' 🍿 Movies Update 🍿', url="https://t.me/+kCo8QBKkmAk0OWJl"),
-                           InlineKeyboardButton(' 🏏Cricket Updates🏏 ', url="https://t.me/+rhJP2sUIPrJiNzM1")
-                            ]
+                reply_markup=InlineKeyboardMarkup(
+                   [
+                         [
+                           InlineKeyboardButton(' 🍿 Movies Update 🍿', url="https://t.me/+kCo8QBKkmAk0OWJl")
+                       ],[
+                        InlineKeyboardButton(' 🏏Cricket Updates🏏 ', url="https://t.me/+rhJP2sUIPrJiNzM1")
+                         ]
                         ]
                     )
                 )
-            )
-
             filetype = msg.media
             file = getattr(msg, filetype.value)
-            title = '@TeamHMT ' + ' '.join(filter(lambda x: not x.startswith('[') and not x.startswith('@'), file.file_name.split()))
+            title = '@MOVIES_PROVIDE ' + ' '.join(filter(lambda x: not x.startswith('[') and not x.startswith('@'), file.file_name.split()))
             size=get_size(file.file_size)
             f_caption = f"<code>{title}</code>"
             if CUSTOM_FILE_CAPTION:
@@ -462,9 +433,6 @@ async def start(client, message):
             btn = [[
                 InlineKeyboardButton("Get File Again", callback_data=f'delfile#{file_id}')
             ]]
-            k = await msg.reply("<b><u>❗️❗️❗️IMPORTANT❗️️❗️❗️</u></b>\n\nThis Movie File/Video will be deleted in <b><u>10 mins</u> 🫥 <i></b>(Due to Copyright Issues)</i>.\n\n<b><i>Please forward this File/Video to your Saved Messages and Start Download there</i></b>",quote=True)
-            await asyncio.sleep(600)
-            await msg.delete()
             await k.edit_text("<b>Your File/Video is successfully deleted!!!\n\nClick below button to get your deleted file 👇</b>",reply_markup=InlineKeyboardMarkup(btn))
             return
         except:
@@ -497,39 +465,21 @@ async def start(client, message):
         file_id=file_id,
         caption=f_caption,
         protect_content=True if pre == 'filep' else False,
-        reply_markup=(
-            InlineKeyboardMarkup(
-                        [
-                            [
-                                InlineKeyboardButton('Watch Online/ Fast Download', callback_data=f'gen_stream_link:{file_id}')
-                            ],[
-                                InlineKeyboardButton(' 🍿 Movies Update 🍿', url="https://t.me/+kCo8QBKkmAk0OWJl"),
-                           InlineKeyboardButton(' 🏏Cricket Updates🏏 ', url="https://t.me/+rhJP2sUIPrJiNzM1")
-                            ]
-                        ]
-                    )
-                    if IS_STREAM
-                    else InlineKeyboardMarkup(
-                        [
-                            [
-                                InlineKeyboardButton(' 🍿 Movies Update 🍿', url="https://t.me/+kCo8QBKkmAk0OWJl"),
-                           InlineKeyboardButton(' 🏏Cricket Updates🏏 ', url="https://t.me/+rhJP2sUIPrJiNzM1")
-                            ]
+        reply_markup=InlineKeyboardMarkup(
+           [
+                         [
+                           InlineKeyboardButton(' 🍿 Movies Update 🍿', url="https://t.me/+kCo8QBKkmAk0OWJl")
+                       ],[
+                        InlineKeyboardButton(' 🏏Cricket Updates🏏 ', url="https://t.me/+rhJP2sUIPrJiNzM1")
+                         ]
                         ]
                     )
                 )
-            )
-
     btn = [[
         InlineKeyboardButton("Get File Again", callback_data=f'delfile#{file_id}')
     ]]
-    k = await msg.reply("<b><u>❗️❗️❗️IMPORTANT❗️️❗️❗️</u></b>\n\nThis Movie File/Video will be deleted in <b><u>10 mins</u> 🫥 <i></b>(Due to Copyright Issues)</i>.\n\n<b><i>Please forward this File/Video to your Saved Messages and Start Download there</i></b>",quote=True)
-    await asyncio.sleep(600)
-    await msg.delete()
     await k.edit_text("<b>Your File/Video is successfully deleted!!!\n\nClick below button to get your deleted file 👇</b>",reply_markup=InlineKeyboardMarkup(btn))
     return   
-
-    
 
 @Client.on_message(filters.command('channel') & filters.user(ADMINS))
 async def channel_info(bot, message):
