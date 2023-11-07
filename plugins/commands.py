@@ -109,7 +109,7 @@ async def start(client, message):
                 btn.append([InlineKeyboardButton("↻ Tʀʏ Aɢᴀɪɴ", url=f"https://t.me/{temp.U_NAME}?start={message.command[1]}")])
         await client.send_message(
             chat_id=message.from_user.id,
-             text="**🚸| Sorry, you are not in our Deals Channel\n\n🔰| You need to subscribe it! In order to use our Movies Bot.\n\n📺 𝗖𝗵𝗮𝗻𝗻𝗲𝗹 1: \n\nhttps://t.me/KothimeerKattaDeals\n\n📺 𝗖𝗵𝗮𝗻𝗻𝗲𝗹 2:\n\nhttp://t.me/+JNYFvb7EuI40ZWZl\n\n‼️| 𝗦𝘂𝗯𝘀𝗰𝗿𝗶𝗯𝗲 𝗮𝗻𝗱 𝘁𝗵𝗲𝗻 𝘀𝗲𝗻𝗱 /𝘀𝘁𝗮𝗿𝘁. 👍**",
+             text="**🚸| Sorry, you are not in our Deals Channel\n\n🔰| You need to subscribe it! In order to use our Movies Bot.\n\n📺 𝗖𝗵𝗮𝗻𝗻𝗲𝗹 1: \n\nhttps://telegram.dog/+p4JVV75mlz8xNjBl\n\n📺 𝗖𝗵𝗮𝗻𝗻𝗲𝗹 2:\n\nhttp://t.me/+JNYFvb7EuI40ZWZl\n\n‼️| 𝗦𝘂𝗯𝘀𝗰𝗿𝗶𝗯𝗲 𝗮𝗻𝗱 𝘁𝗵𝗲𝗻 𝘀𝗲𝗻𝗱 /𝘀𝘁𝗮𝗿𝘁. 👍**",
             reply_markup=InlineKeyboardMarkup(btn),
             parse_mode=enums.ParseMode.MARKDOWN
             )
