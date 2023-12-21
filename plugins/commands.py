@@ -363,8 +363,9 @@ async def start(client, message):
                     )
                 )
                 filesarr.append(msg)
-        await k.edit_text("<b>Your All Files/Videos is successfully deleted!!!</b>")
-        return    
+await k.edit_text("<b>Your All Files/Videos is successfully deleted!!!</b>")
+return
+
         
     elif data.startswith("files"):
         user = message.from_user.id
