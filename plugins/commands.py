@@ -2,14 +2,13 @@ import os
 import logging
 import random
 import asyncio
-from pyrogram.errors import UserNotParticipant
 from Script import script
 from pyrogram import Client, filters, enums
 from pyrogram.errors import ChatAdminRequired, FloodWait
 from pyrogram.types import *
 from database.ia_filterdb import Media, get_file_details, unpack_new_file_id, get_bad_files
 from database.users_chats_db import db
-from info import CHANNELS, ADMINS, AUTH_CHANNEL, AUTH_CHANNEL1, LOG_CHANNEL, PICS, BATCH_FILE_CAPTION, CUSTOM_FILE_CAPTION, PROTECT_CONTENT, CHNL_LNK, GRP_LNK, REQST_CHANNEL, SUPPORT_CHAT_ID, SUPPORT_CHAT, MAX_B_TN, VERIFY, SHORTLINK_API, SHORTLINK_URL, TUTORIAL, IS_TUTORIAL, PREMIUM_USER
+from info import CHANNELS, ADMINS, AUTH_CHANNEL, LOG_CHANNEL, PICS, BATCH_FILE_CAPTION, CUSTOM_FILE_CAPTION, PROTECT_CONTENT, CHNL_LNK, GRP_LNK, REQST_CHANNEL, SUPPORT_CHAT_ID, SUPPORT_CHAT, MAX_B_TN, VERIFY, SHORTLINK_API, SHORTLINK_URL, TUTORIAL, IS_TUTORIAL, PREMIUM_USER
 from utils import get_settings, get_size, is_subscribed, save_group_settings, temp, verify_user, check_token, check_verification, get_token, get_shortlink, get_tutorial
 from database.connections_mdb import active_connection
 # from plugins.pm_filter import ENABLE_SHORTLINK
@@ -24,10 +23,8 @@ BATCH_FILES = {}
 async def start(client, message):
     if message.chat.type in [enums.ChatType.GROUP, enums.ChatType.SUPERGROUP]:
         buttons = [[
-                  InlineKeyboardButton("➕️ 𝙰𝙳𝙳 𝙼𝙴 𝚃𝙾 𝚈𝙾𝚄𝚁 𝙶𝚁𝙾𝚄𝙿 ➕️", url=f"http://t.me/{temp.U_NAME}?startgroup=true"),
+                    InlineKeyboardButton("➕️ 𝙰𝙳𝙳 𝙼𝙴 𝚃𝙾 𝚈𝙾𝚄𝚁 𝙶𝚁𝙾𝚄𝙿 ➕️", url=f"http://t.me/{temp.U_NAME}?startgroup=true"),
                ],[
-                 InlineKeyboardButton("🔍 𝚂𝙴𝙰𝚁𝙲𝙷 🔍", switch_inline_query_current_chat=''), 
-                ],[
                  InlineKeyboardButton(' 🏏 Cricket Updates 🏏', url="https://t.me/+rhJP2sUIPrJiNzM1"),
                  InlineKeyboardButton(' 💌 Contact 💌 ', url="https://t.me/KKContactAdminBot")
              ],[
@@ -41,17 +38,13 @@ async def start(client, message):
             await client.send_message(LOG_CHANNEL, script.LOG_TEXT_G.format(message.chat.title, message.chat.id, total, "Unknown"))       
             await db.add_chat(message.chat.id, message.chat.title)
         return 
-
     if not await db.is_user_exist(message.from_user.id):
         await db.add_user(message.from_user.id, message.from_user.first_name)
         await client.send_message(LOG_CHANNEL, script.LOG_TEXT_P.format(message.from_user.id, message.from_user.mention))
-
     if len(message.command) != 2:
         buttons = [[
-                 InlineKeyboardButton("➕️ 𝙰𝙳𝙳 𝙼𝙴 𝚃𝙾 𝚈𝙾𝚄𝚁 𝙶𝚁𝙾𝚄𝙿 ➕️", url=f"http://t.me/{temp.U_NAME}?startgroup=true"),
+                    InlineKeyboardButton("➕️ 𝙰𝙳𝙳 𝙼𝙴 𝚃𝙾 𝚈𝙾𝚄𝚁 𝙶𝚁𝙾𝚄𝙿 ➕️", url=f"http://t.me/{temp.U_NAME}?startgroup=true"),
                ],[
-                 InlineKeyboardButton("🔍 𝚂𝙴𝙰𝚁𝙲𝙷 🔍", switch_inline_query_current_chat=''), 
-                ],[
                  InlineKeyboardButton(' 🏏 Cricket Updates 🏏', url="https://t.me/+rhJP2sUIPrJiNzM1"),
                  InlineKeyboardButton(' 💌 Contact 💌 ', url="https://t.me/KKContactAdminBot")
              ],[
@@ -66,40 +59,19 @@ async def start(client, message):
         )
         return
     if AUTH_CHANNEL and not await is_subscribed(client, message):
-        akas = []
-        btn = []
         try:
-            user = await client.get_chat_member(AUTH_CHANNEL, message.from_user.id)
-        except UserNotParticipant:
-            akas.append(AUTH_CHANNEL)
-            pass
-        except Exception as e:
-            akas.append(AUTH_CHANNEL)
-            logger.exception(e)
-        else:
-            if user.status != 'kicked':
-                print("True")
-        try:
-            user = await client.get_chat_member(AUTH_CHANNEL1, message.from_user.id)
-        except UserNotParticipant:
-            akas.append(AUTH_CHANNEL1)
-            pass
-        except Exception as e:
-            akas.append(AUTH_CHANNEL1)
-            logger.exception(e)
-        else:
-            if user.status != 'kicked':
-                print("True")
-        for aut in akas:
-            try:
-                invite_link = await client.create_chat_invite_link(int(aut))
-                naam = await client.get_chat(int(aut))
-                naam = naam.title
-            except ChatAdminRequired:
-                logger.error("Make sure Bot is admin in Forcesub channel")
-                return
-            btn.append([InlineKeyboardButton(naam, url=invite_link.invite_link)])
-            
+            invite_link = await client.create_chat_invite_link(int(AUTH_CHANNEL))
+        except ChatAdminRequired:
+            logger.error("Make sure Bot is admin in Forcesub channel")
+            return
+        btn = [
+            [
+                InlineKeyboardButton(
+                    "🔻 ᴊᴏɪɴ ᴜᴘᴅᴀᴛᴇ ᴄʜᴀɴɴᴇʟ 🔻", url=invite_link.invite_link
+                )
+            ]
+        ]
+
         if message.command[1] != "subscribe":
             try:
                 kk, file_id = message.command[1].split("_", 1)
@@ -109,7 +81,7 @@ async def start(client, message):
                 btn.append([InlineKeyboardButton("↻ Tʀʏ Aɢᴀɪɴ", url=f"https://t.me/{temp.U_NAME}?start={message.command[1]}")])
         await client.send_message(
             chat_id=message.from_user.id,
-             text="**🚸| Sorry, you are not in our Deals Channel\n\n🔰| You need to subscribe it! In order to use our Movies Bot.\n\n📺 𝗖𝗵𝗮𝗻𝗻𝗲𝗹 1: \n\nhttps://telegram.dog/+p4JVV75mlz8xNjBl\n\n📺 𝗖𝗵𝗮𝗻𝗻𝗲𝗹 2:\n\nhttp://t.me/+JNYFvb7EuI40ZWZl\n\n‼️| 𝗦𝘂𝗯𝘀𝗰𝗿𝗶𝗯𝗲 𝗮𝗻𝗱 𝘁𝗵𝗲𝗻 𝘀𝗲𝗻𝗱 /𝘀𝘁𝗮𝗿𝘁. 👍**",
+            text="**You are not in our channel given below so you don't get the movie file...\n\nIf you want the movie file, click on the '🍿ᴊᴏɪɴ ᴏᴜʀ ʙᴀᴄᴋ-ᴜᴘ ᴄʜᴀɴɴᴇʟ🍿' button below and join our back-up channel, then click on the '🔄 Try Again' button below...\n\nThen you will get the movie files...**",
             reply_markup=InlineKeyboardMarkup(btn),
             parse_mode=enums.ParseMode.MARKDOWN
             )
