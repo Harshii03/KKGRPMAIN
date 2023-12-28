@@ -61,17 +61,8 @@ async def is_subscribed(bot, query):
     except Exception as e:
         logger.exception(e)
     else:
-        if user.status != 'kicked':
-            try:
-                user1 = await bot.get_chat_member(AUTH_CHANNEL1, query.from_user.id)
-            except UserNotParticipant:
-                pass
-            except Exception as e:
-                logger.exception(e)
-            else:
-                if user1.status != 'kicked':
-                    return True
-            return False
+        if user.status != enums.ChatMemberStatus.BANNED:
+            return True
 
     return False
 
@@ -781,7 +772,7 @@ async def send_all(bot, userid, files, ident, chat_id, user_name, query):
                                 InlineKeyboardButton('Sᴜᴘᴘᴏʀᴛ Gʀᴏᴜᴘ', url=GRP_LNK),
                                 InlineKeyboardButton('Uᴘᴅᴀᴛᴇs Cʜᴀɴɴᴇʟ', url=CHNL_LNK)
                             ],[
-                                InlineKeyboardButton("Bᴏᴛ Oᴡɴᴇʀ", url="t.me/Kgashok04")
+                                InlineKeyboardButton("Bᴏᴛ Oᴡɴᴇʀ", url="t.me/KKAdminRobot")
                                 ]
                             ]
                         )
@@ -824,7 +815,7 @@ async def send_all(bot, userid, files, ident, chat_id, user_name, query):
                         InlineKeyboardButton('Sᴜᴘᴘᴏʀᴛ Gʀᴏᴜᴘ', url=GRP_LNK),
                         InlineKeyboardButton('Uᴘᴅᴀᴛᴇs Cʜᴀɴɴᴇʟ', url=CHNL_LNK)
                     ],[
-                        InlineKeyboardButton("Bᴏᴛ Oᴡɴᴇʀ", url="t.me/Kgashok04")
+                        InlineKeyboardButton("Bᴏᴛ Oᴡɴᴇʀ", url="t.me/KKAdminRobot")
                         ]
                     ]
                 )
